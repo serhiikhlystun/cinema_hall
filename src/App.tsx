@@ -1,19 +1,31 @@
 import React from "react";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Main from "./components/Main";
+import { useSelector } from "react-redux";
+import RegisterForm from "./components/RegisterForm";
+import LoginForm from "./components/LoginForm";
+import AuthStatus from "./components/AuthStatus";
+import { RootState } from "./store/store";
 
 const App: React.FC = () => {
+  const authToken = useSelector((state: RootState) => state.auth.token);
+
   return (
-    <div className="App">
-      <header className="bg-gray-800">
-        <h1 className="text-white text-3xl font-bold p-4">
-          Welcome to My React App
-        </h1>
-        <p className="text-gray-300 p-4">
-          This is a simple React application styled with Tailwind CSS.
-        </p>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Click Me
-        </button>
-      </header>
+    <div className="text-center">
+      <Header />
+      <AuthStatus />
+      {authToken ? (
+        // If logged in, show film management components
+        <Main />
+      ) : (
+        // If not logged in, show login and registration forms
+        <div className="flex justify-around flex-wrap gap-[20px]">
+          <RegisterForm />
+          <LoginForm />
+        </div>
+      )}
+      <Footer />
     </div>
   );
 };
